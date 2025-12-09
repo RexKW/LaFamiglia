@@ -71,9 +71,9 @@
                 <div class="space-y-3">
                     ${answers.map((answer, idx) => `
                         <button 
-                            onclick="checkAnswer('${answer}', '${question.correct_answer}')"
+                            onclick="handleAnswerClick(this)"
                             class="w-full text-left p-4 bg-zinc-900/50 border-2 border-zinc-700 rounded-lg hover:border-blue-500 hover:bg-zinc-900 transition-all duration-200 text-white font-medium answer-btn"
-                            data-answer="${answer}"
+                            data-answer="${answer.replace(/"/g, '&quot;')}"
                             ${answered ? 'disabled' : ''}
                         >
                             ${answer}
@@ -84,6 +84,15 @@
 
             document.getElementById('quizContainer').innerHTML = html;
             updateProgress();
+        }
+
+        function handleAnswerClick(btn) {
+            if (answered) return;
+            
+            const selectedAnswer = btn.getAttribute('data-answer');
+            const correctAnswer = questions[currentIndex].correct_answer;
+            
+            checkAnswer(selectedAnswer, correctAnswer);
         }
 
         function updateProgress() {

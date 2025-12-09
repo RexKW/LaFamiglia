@@ -7,6 +7,13 @@ use Illuminate\Http\Request;
 
 class QuizController extends Controller
 {
+
+    public function index()
+    {
+        $quizzes = Quiz::all();
+        
+        return view('quiz.index', compact('quizzes'));
+    }
     public function review($quizId)
     {
         $quiz = Quiz::with('flashcards')->findOrFail($quizId);

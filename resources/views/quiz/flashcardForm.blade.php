@@ -1,5 +1,5 @@
 <x-template>
-    <div class="w-full max-w-3xl">
+    <div class="w-full max-w-3xl mt-20">
         <!-- Header Section -->
         <div class="text-center mb-8">
             <div

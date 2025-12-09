@@ -18,6 +18,12 @@ class FlashcardController extends Controller
         $this->openRouterService = $openRouterService;
     }
 
+    public function showGenerateForm()
+    {
+        return view('quiz.flashcardForm');
+    }
+
+
     public function generateFlashcards(Request $request)
     {
         $request->validate([
@@ -75,40 +81,42 @@ class FlashcardController extends Controller
             ['role' => 'user', 'content' => $prompt]
         ];
 
-        $tools =
-            [
-                [
-                    "type" => "function",
-                    "name" => "create_quiz_questions",
-                    "description" => "Create multiple quiz questions in one request",
-                    "parameters" => [
-                        "type" => "object",
-                        "properties" => [
-                            "questions" => [
-                                "type" => "array",
-                                "items" => [
-                                    "type" => "object",
-                                    "properties" => [
-                                        "question" => ["type" => "string"],
-                                        "correct_answer" => ["type" => "string"],
-                                        "wrong_answer_1" => ["type" => "string"],
-                                        "wrong_answer_2" => ["type" => "string"],
-                                        "wrong_answer_3" => ["type" => "string"]
-                                    ],
-                                    "required" => [
-                                        "question",
-                                        "correct_answer",
-                                        "wrong_answer_1",
-                                        "wrong_answer_2",
-                                        "wrong_answer_3"
-                                    ]
-                                ]
+        $tools = [
+    [
+        "type" => "function",
+        "function" => [
+            "name" => "create_quiz_questions",
+            "description" => "Create multiple quiz questions in one request",
+            "parameters" => [
+                "type" => "object",
+                "properties" => [
+                    "questions" => [
+                        "type" => "array",
+                        "items" => [
+                            "type" => "object",
+                            "properties" => [
+                                "question" => ["type" => "string"],
+                                "correct_answer" => ["type" => "string"],
+                                "wrong_answer_1" => ["type" => "string"],
+                                "wrong_answer_2" => ["type" => "string"],
+                                "wrong_answer_3" => ["type" => "string"]
+                            ],
+                            "required" => [
+                                "question",
+                                "correct_answer",
+                                "wrong_answer_1",
+                                "wrong_answer_2",
+                                "wrong_answer_3"
                             ]
-                        ],
-                        "required" => ["questions"]
+                        ]
                     ]
-                ]
-            ];
+                ],
+                "required" => ["questions"]
+            ]
+        ]
+    ]
+];
+
 
 //         $messages = [
 //             [
