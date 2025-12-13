@@ -187,5 +187,7 @@
 
         // Initialize
         renderQuestion();
+
+        
     </script>
 </x-template>

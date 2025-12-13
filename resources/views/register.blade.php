@@ -38,7 +38,7 @@
                 Register
             </button>
 
-            <p class="w-full text-center mt-2">Already have an account? <a href="/login" class="text-blue-500 hover:underline">Login here</a>.</p>
+            <p class="w-full text-center mt-2">Already have an account? <a href="/" class="text-blue-500 hover:underline">Login here</a>.</p>
         </div>
     </form>
 </x-loginRegisterTemplate>

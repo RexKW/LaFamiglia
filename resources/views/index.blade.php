@@ -30,25 +30,7 @@
 </head>
 <body class="bg-slate-950 text-white">
     <!-- Navigation -->
-    <nav class="fixed w-full top-0 z-50 bg-slate-950/80 backdrop-blur-lg border-b border-slate-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center space-x-2">
-                    <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg"></div>
-                    <span class="text-xl font-bold">LaFamiglia</span>
-                </div>
-                <div class="hidden md:flex space-x-8">
-                    <a href="#features" class="hover:text-purple-400 transition">Features</a>
-                    <a href="#how-it-works" class="hover:text-purple-400 transition">How It Works</a>
-                    <a href="#pricing" class="hover:text-purple-400 transition">Pricing</a>
-                </div>
-                <div class="flex space-x-4">
-                    <a href="/login" class="px-4 py-2 text-sm hover:text-purple-400 transition">Sign In</a>
-                    <a href="/register" class="px-6 py-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg text-sm font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition">Get Started</a>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <x-navBar/>
 
     <!-- Hero Section -->
     <section class="pt-32 pb-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">

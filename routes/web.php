@@ -7,12 +7,13 @@ use App\Http\Middleware\Middleware;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('index');
-});
-
-Route::get('/login', function (){
+    // return view('index');
     return view('login');
 });
+
+// Route::get('/login', function (){
+//     return view('login');
+// });
 
 Route::get('/register', function (){
     return view('register');
@@ -33,6 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/quiz/{quiz}/review', [QuizController::class, 'review'])->name('quiz.review');
     Route::get('/quiz/{quiz}/start', [QuizController::class, 'start'])->name('quiz.start');
     Route::post('/quiz/{quiz}/check-answer', [QuizController::class, 'checkAnswer'])->name('quiz.check.answer');
+    Route::delete('/quiz/{id}', [QuizController::class, 'destroy'])->name('quiz.destroy');
 });
 
 

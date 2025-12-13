@@ -1,5 +1,5 @@
 <x-template>
-    <div class="w-full max-w-4xl">
+    <div class="w-full h-full mt-32">
         <!-- Header Section -->
         <div class="text-center mb-8">
             <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl mb-4 shadow-lg">
@@ -66,7 +66,7 @@
 
         <!-- Action Buttons -->
         <div class="flex gap-4 justify-center">
-            <a href="/" class="px-8 py-3 bg-zinc-700 hover:bg-zinc-600 text-white font-semibold rounded-lg transition-all duration-200">
+            <a href="/home" class="px-8 py-3 bg-zinc-700 hover:bg-zinc-600 text-white font-semibold rounded-lg transition-all duration-200">
                 Create New Quiz
             </a>
             <a href="{{ route('quiz.start', $quiz->id) }}" class="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl">

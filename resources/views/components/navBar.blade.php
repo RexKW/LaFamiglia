@@ -10,10 +10,11 @@
             <!-- Auth Section -->
             <div class="flex items-center gap-6">
                 @auth
+                    <a href="/home" class="px-4 py-2 text-sm hover:text-purple-400 transition">Quizzes</a>
                     <span class="text-zinc-400 text-sm">{{ Auth::user()->username }}</span>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit" class="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-white text-sm rounded-lg transition-colors">
+                        <button type="submit" class="px-4 py-2  bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm rounded-lg transition-colors">
                             Logout
                         </button>
                     </form>

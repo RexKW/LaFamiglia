@@ -8,6 +8,7 @@ use App\Services\OpenRouterService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Smalot\PdfParser\Parser;
 
 class FlashcardController extends Controller
 {
@@ -26,13 +27,46 @@ class FlashcardController extends Controller
 
     public function generateFlashcards(Request $request)
     {
+        // dd($_FILES);
         $request->validate([
             'content' => 'required|string|min:10',
+            'pdf' => 'nullable|file|mimes:pdf|max:20480',
         ]);
 
+
+
         try {
+            if (!$request->input('content') && !$request->hasFile('pdf')) {
+                return back()->with('error', 'Please enter text or upload a PDF.');
+            }
+
+            $finalText = '';
+
+            if ($request->hasFile('pdf')) {
+                $pdfFile = $request->file('pdf');
+
+                $parser = new Parser();
+                $pdf = $parser->parseFile($pdfFile->getPathname());
+
+                $pdfText = $pdf->getText();
+
+                // Make sure PDF text extracted correctly
+                if (!$pdfText || strlen(trim($pdfText)) < 10) {
+                    return back()->with('error', 'Unable to extract text from the PDF.');
+                }
+
+                $finalText .= "\n" . $pdfText;
+            }
+
+            if ($request->input('content')) {
+                $finalText .= "\n" . $request->input('content');
+            }
+
+            $finalText = trim($finalText);
+
+
             // 1. Generate flashcard questions using the AI tool
-            $questions = $this->generateQuestions($request->input('content'));
+            $questions = $this->generateQuestions($finalText);
 
             if (!is_array($questions) || count($questions) === 0) {
                 return back()->with('error', 'AI did not return any questions.');
@@ -82,51 +116,51 @@ class FlashcardController extends Controller
         ];
 
         $tools = [
-    [
-        "type" => "function",
-        "function" => [
-            "name" => "create_quiz_questions",
-            "description" => "Create multiple quiz questions in one request",
-            "parameters" => [
-                "type" => "object",
-                "properties" => [
-                    "questions" => [
-                        "type" => "array",
-                        "items" => [
-                            "type" => "object",
-                            "properties" => [
-                                "question" => ["type" => "string"],
-                                "correct_answer" => ["type" => "string"],
-                                "wrong_answer_1" => ["type" => "string"],
-                                "wrong_answer_2" => ["type" => "string"],
-                                "wrong_answer_3" => ["type" => "string"]
-                            ],
-                            "required" => [
-                                "question",
-                                "correct_answer",
-                                "wrong_answer_1",
-                                "wrong_answer_2",
-                                "wrong_answer_3"
+            [
+                "type" => "function",
+                "function" => [
+                    "name" => "create_quiz_questions",
+                    "description" => "Create multiple quiz questions in one request",
+                    "parameters" => [
+                        "type" => "object",
+                        "properties" => [
+                            "questions" => [
+                                "type" => "array",
+                                "items" => [
+                                    "type" => "object",
+                                    "properties" => [
+                                        "question" => ["type" => "string"],
+                                        "correct_answer" => ["type" => "string"],
+                                        "wrong_answer_1" => ["type" => "string"],
+                                        "wrong_answer_2" => ["type" => "string"],
+                                        "wrong_answer_3" => ["type" => "string"]
+                                    ],
+                                    "required" => [
+                                        "question",
+                                        "correct_answer",
+                                        "wrong_answer_1",
+                                        "wrong_answer_2",
+                                        "wrong_answer_3"
+                                    ]
+                                ]
                             ]
-                        ]
+                        ],
+                        "required" => ["questions"]
                     ]
-                ],
-                "required" => ["questions"]
+                ]
             ]
-        ]
-    ]
-];
+        ];
 
 
-//         $messages = [
+        //         $messages = [
 //             [
 //                 "role" => "system",
 //                 "content" => "
 // You are an AI that generates quiz data and must call the correct tool when needed.
 
-// Here is the tool definition:
+        // Here is the tool definition:
 
-// {
+        // {
 //   \"type\": \"function\",
 //   \"name\": \"create_quiz_questions\",
 //   \"description\": \"Create multiple quiz questions in one request\",
@@ -158,7 +192,7 @@ class FlashcardController extends Controller
 //   }
 // }
 
-// When the user gives text content, extract multiple quiz questions and call the function.
+        // When the user gives text content, extract multiple quiz questions and call the function.
 // "
 //             ],
 //             [

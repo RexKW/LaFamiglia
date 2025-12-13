@@ -1,37 +1,82 @@
 <x-template>
-    <div class="w-full max-w-3xl mt-20">
+    <div class="w-full max-w-3xl">
         <!-- Header Section -->
         <div class="text-center mb-8">
-            <div
+            {{-- <div
                 class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl mb-4 shadow-lg">
                 <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
                     </path>
                 </svg>
-            </div>
-            <h1 class="text-4xl font-bold text-white mb-2">Flashcard Generator</h1>
-            <p class="text-zinc-400 text-lg">Transform your study material into interactive flashcards</p>
+            </div> --}}
         </div>
 
         <!-- Main Card -->
         <div class="bg-zinc-800/50 backdrop-blur-sm rounded-3xl shadow-2xl border border-zinc-700/50 p-8">
-            <form action="{{ route('generate.flashcards') }}" method="POST" class="space-y-6">
+             <h1 class="text-4xl text-center font-bold text-white mb-2">Flashcard Generator</h1>
+            <form action="{{ route('generate.flashcards') }}" enctype="multipart/form-data"  method="POST" class="space-y-6">
                 @csrf
                 <!-- Textarea Section -->
                 <div>
-                    <label for="content" class="block text-sm font-medium text-zinc-300 mb-3">
+                    <label for="content" class="block text-sm text-center font-medium text-zinc-300 mb-3">
                         Enter Your Study Material
                     </label>
+
                     <div class="relative">
+
+                        <!-- Textarea -->
                         <textarea id="content" name="content" rows="12"
-                            placeholder="Paste your notes, textbook excerpts, or any study material here. I'll help you create flashcards from it..."
-                            class="w-full bg-zinc-900/50 border border-zinc-700 rounded-2xl p-4 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent resize-none transition-all duration-200"></textarea>
+                            placeholder="Paste your notes, textbook excerpts, or any study material here..."
+                            class="w-full bg-zinc-900/50 border border-zinc-700 rounded-2xl p-4 pr-16 text-white placeholder-zinc-500
+            focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent resize-none transition-all duration-200"></textarea>
+
+                        <!-- Character Count -->
                         <div class="absolute bottom-4 right-4 text-xs text-zinc-500">
                             <span id="charCount">0</span> characters
                         </div>
+
+                        <!-- Attachment Button -->
+                        <label for="pdfUpload"
+                            class="absolute top-4 right-4 cursor-pointer bg-zinc-800/80 hover:bg-zinc-700 text-white p-2 rounded-xl transition">
+                            <!-- Paperclip Icon -->
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 12.79V7a4 4 0 00-8 0v9a2 2 0 104 0V7"></path>
+                            </svg>
+                        </label>
+
+                        <!-- Hidden File Input -->
+                        <input id="pdfUpload" name="pdf" type="file" accept="application/pdf" class="hidden">
+                    </div>
+
+                    <!-- Attachment Preview -->
+                    <div id="pdfPreview"
+                        class="hidden mt-3 flex items-center space-x-3 bg-zinc-800/40 p-3 rounded-xl border border-zinc-700">
+                        <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M7 7V3a1 1 0 011-1h4m4 4v14a2 2 0 01-2 2H7a2 2 0 01-2-2V7m10 0h-3m-4 0H5"></path>
+                        </svg>
+
+                        <span id="pdfFileName" class="text-zinc-300 text-sm"></span>
+
+                        <button type="button" id="removePdf"
+                            class="text-zinc-400 hover:text-red-400 transition text-sm">
+                            Remove
+                        </button>
                     </div>
                 </div>
+                @if ($errors->any())
+                    <div class="mb-4 bg-red-500/20 border border-red-500/30 text-red-300 p-4 rounded-xl">
+                        <strong>Error:</strong>
+                        <ul class="mt-2 space-y-1">
+                            @foreach ($errors->all() as $error)
+                                <li>• {{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 @if (session('error'))
                     <div class="mb-4 bg-red-500/20 border border-red-500/30 text-red-300 p-4 rounded-xl">
                         <strong>Error:</strong> {{ session('error') }}
@@ -69,18 +114,31 @@
             </form>
         </div>
 
-        <!-- Footer -->
-        <div class="text-center mt-6 text-zinc-500 text-sm">
-            Powered by AI • Study smarter, not harder
-        </div>
+
     </div>
 
     <script>
         const textarea = document.getElementById('content');
         const charCount = document.getElementById('charCount');
+        const pdfUpload = document.getElementById('pdfUpload');
+        const pdfPreview = document.getElementById('pdfPreview');
+        const pdfFileName = document.getElementById('pdfFileName');
+        const removePdf = document.getElementById('removePdf');
 
         textarea.addEventListener('input', function () {
             charCount.textContent = this.value.length;
+        });
+
+        pdfUpload.addEventListener('change', function () {
+            if (this.files.length > 0) {
+                pdfFileName.textContent = this.files[0].name;
+                pdfPreview.classList.remove('hidden');
+            }
+        });
+
+        removePdf.addEventListener('click', function () {
+            pdfUpload.value = '';
+            pdfPreview.classList.add('hidden');
         });
     </script>
 </x-template>
