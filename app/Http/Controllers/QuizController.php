@@ -10,7 +10,9 @@ class QuizController extends Controller
 
     public function index()
     {
-        $quizzes = Quiz::whereAll('user_id', auth()->id())->withCount('flashcards')->get();
+        $quizzes = Quiz::where('user_id', auth()->id())
+        ->withCount('flashcards')
+        ->get();
 
         return view('quiz.index', compact('quizzes'));
     }
