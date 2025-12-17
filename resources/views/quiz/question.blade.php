@@ -23,7 +23,7 @@
         </div>
 
         <!-- Main Card -->
-        <div class="bg-zinc-800/50 backdrop-blur-sm rounded-3xl shadow-2xl border border-zinc-700/50 p-8">
+        <div class="bg-[#3B5155] border border-[#A3ACB9] border-2 rounded-3xl  p-8">
             <div id="quizContainer">
                 <!-- Question will be rendered here -->
             </div>
