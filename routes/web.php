@@ -8,12 +8,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     // return view('index');
-    return view('login');
+    // return view('login');
+    return redirect('/login');
 });
 
-// Route::get('/login', function (){
-//     return view('login');
-// });
+
+
+Route::get('/login', function (){
+    return view('login');
+})->name('login');
 
 Route::get('/register', function (){
     return view('register');
@@ -35,7 +38,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/quiz/{quiz}/start', [QuizController::class, 'start'])->name('quiz.start');
     Route::post('/quiz/{quiz}/check-answer', [QuizController::class, 'checkAnswer'])->name('quiz.check.answer');
     Route::delete('/quiz/{id}', [QuizController::class, 'destroy'])->name('quiz.destroy');
+    Route::post('/quiz/{quiz}/share', [QuizController::class, 'share'])->name('quiz.share');
 });
+
+// Public shareable routes (no auth required)
+Route::get('/s/{token}/review', [QuizController::class, 'publicReview'])->name('quiz.public.review');
+Route::get('/s/{token}/start', [QuizController::class, 'publicStart'])->name('quiz.public.start');
 
 
 

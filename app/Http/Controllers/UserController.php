@@ -22,9 +22,7 @@ class UserController extends Controller
             return redirect('/home');
         }
 
-        return back()->withErrors([
-            'error' => 'Invalid username or password.',
-        ]);
+        return back()->with('error', 'Invalid username or password.');
 
         // $user = User::where("username", $request->username)->first();
         // if (!$user) {

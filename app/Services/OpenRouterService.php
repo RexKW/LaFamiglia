@@ -17,8 +17,8 @@ class OpenRouterService
     public function chat($messages, $tools = null)
     {
         $body = [
-            // "model" => "tngtech/tng-r1t-chimera:free",
-            "model" => "amazon/nova-2-lite-v1:free",
+            "model" => "tngtech/tng-r1t-chimera:free",
+            // "model" => "amazon/nova-2-lite-v1:free",
             "messages" => $messages,
             "temperature" => 0.6,
         ];

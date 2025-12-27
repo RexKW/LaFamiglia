@@ -11,6 +11,10 @@
             </div>
             <h1 class="text-4xl font-bold text-white mb-2">All Quizzes</h1>
             <p class="text-zinc-400 text-lg">Browse your generated quizzes</p>
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="text-zinc-400 hover:text-white transition-colors duration-200">Logout</button>
+            </form>
         </div>
 
         <!-- Quizzes List -->

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Quiz;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class QuizController extends Controller
 {
@@ -18,17 +19,62 @@ class QuizController extends Controller
     }
     public function review($quizId)
     {
-        $quiz = Quiz::with('flashcards')->findOrFail($quizId);
+        $quiz = Quiz::with('flashcards')->find($quizId);
+            if (!$quiz) {
+                return view('components.errorPage', ['message' => 'Quiz not found.']);
+            }
 
-        return view('quiz.review', compact('quiz'));
+            if ($quiz->user_id !== auth()->id()) {
+                return view('components.errorPage', ['message' => 'Unauthorized Access.']);
+            }
+
+            return view('quiz.review', compact('quiz'));
     }
 
     public function start($quizId)
     {
-        $quiz = Quiz::with('flashcards')->findOrFail($quizId);
+        $quiz = Quiz::with('flashcards')->find($quizId);
+
+            if (!$quiz) {
+                return view('components.errorPage', ['message' => 'Quiz not found.']);
+            }
+
+            if ($quiz->flashcards->isEmpty()) {
+                return view('components.errorPage', ['message' => 'No flashcards available for this quiz.']);
+            }
+
+            if ($quiz->user_id !== auth()->id()) {
+                return view('components.errorPage', ['message' => 'Unauthorized Access.']);
+            }
+
+        return view('quiz.question', [
+            'quiz' => $quiz,
+            'currentQuestion' => 0,
+            'questions' => $quiz->flashcards,
+        ]);
+    }
+
+    // Public shareable review via token
+    public function publicReview($token)
+    {
+        $quiz = Quiz::with('flashcards')->where('share_token', $token)->first();
+        if (!$quiz) {
+            return view('components.errorPage', ['message' => 'Quiz not found or not shared.']);
+        }
+
+        return view('quiz.review', compact('quiz'));
+    }
+
+    // Public shareable start via token
+    public function publicStart($token)
+    {
+        $quiz = Quiz::with('flashcards')->where('share_token', $token)->first();
+        if (!$quiz) {
+            return view('components.errorPage', ['message' => 'Quiz not found or not shared.']);
+        }
 
         if ($quiz->flashcards->isEmpty()) {
-            return back()->with('error', 'No flashcards available for this quiz.');
+            return view('components.errorPage', ['message' => 'No flashcards available for this quiz.']);
         }
 
         return view('quiz.question', [
@@ -38,9 +84,31 @@ class QuizController extends Controller
         ]);
     }
 
+    // Create or return existing share token (owner only)
+    public function share($quizId)
+    {
+        $quiz = Quiz::find($quizId);
+        if (!$quiz) {
+            return back()->with('error', 'Quiz not found.');
+        }
+
+        if ($quiz->user_id !== auth()->id()) {
+            return back()->with('error', 'Unauthorized.');
+        }
+
+        $token = $quiz->ensureShareToken();
+        $link = url('/s/' . $token . '/start');
+
+        return back()->with('success', 'Share link created: ' . $link);
+    }
+
     public function destroy($quizId)
     {
-        $quiz = Quiz::findOrFail($quizId);
+        $quiz = Quiz::find($quizId);
+
+        if (!$quiz) {
+            return view('components.errorPage', ['message' => 'Quiz not found.']);
+        }
 
         $quiz->flashcards()->delete();
 
@@ -52,7 +120,10 @@ class QuizController extends Controller
 
     public function checkAnswer(Request $request, $quizId)
     {
-        $quiz = Quiz::with('flashcards')->findOrFail($quizId);
+        $quiz = Quiz::with('flashcards')->find($quizId);
+        if (!$quiz) {
+            return response()->json(['error' => 'Quiz not found.'], 404);
+        }
         $flashcards = $quiz->flashcards;
 
         $currentIndex = (int) $request->input('current_index', 0);

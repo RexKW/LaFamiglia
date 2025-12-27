@@ -91,7 +91,7 @@ class FlashcardController extends Controller
             }
 
             return redirect()
-                ->route('quiz.review', $quiz->id)
+                ->route('quiz.start', $quiz->id)
                 ->with('success', 'Flashcards generated successfully!');
 
         } catch (\Exception $e) {
@@ -103,7 +103,7 @@ class FlashcardController extends Controller
     private function generateQuestions($content)
     {
         $prompt = <<<PROMPT
-        You are an educational content creator. Based on the following study material, generate 5 multiple-choice questions with 4 answer options (1 correct, 3 incorrect).
+        You are an educational content creator. Based on the following study material, generate 10 multiple-choice questions with 4 answer options (1 correct, 3 incorrect).
 
         Study Material:
         $content

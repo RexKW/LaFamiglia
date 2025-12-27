@@ -30,25 +30,27 @@
         </div>
 
         <!-- Results Modal -->
-        <div id="resultModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+        {{-- <div id="resultModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
             <div class="bg-zinc-800 rounded-3xl p-8 max-w-2xl mx-4 border border-zinc-700">
                 <h2 class="text-2xl font-bold text-white mb-4" id="resultTitle"></h2>
                 <p class="text-zinc-300 mb-6" id="resultMessage"></p>
                 <div class="flex gap-4">
-                    <a href="/" class="flex-1 px-4 py-3 bg-zinc-700 hover:bg-zinc-600 text-white font-semibold rounded-lg transition-all duration-200 text-center">
-                        Back to Home
-                    </a>
                     <button onclick="nextQuestion()" class="flex-1 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all duration-200">
                         Next Question
                     </button>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
 
     <script>
         const questions = @json($questions);
         const quizId = {{ $quiz->id }};
+        const isPublicQuiz = {{ $quiz->share_token ? 'true' : 'false' }};
+        const publicStartUrl = "{{ $quiz->share_token ? route('quiz.public.start', $quiz->share_token) : '' }}";
+        const publicReviewUrl = "{{ $quiz->share_token ? route('quiz.public.review', $quiz->share_token) : '' }}";
+        const internalStartUrl = "{{ route('quiz.start', $quiz->id) }}";
+        const internalReviewUrl = "{{ route('quiz.review', $quiz->id) }}";
         let currentIndex = 0;
         let answered = false;
         let score = 0;
@@ -93,6 +95,7 @@
             const correctAnswer = questions[currentIndex].correct_answer;
             
             checkAnswer(selectedAnswer, correctAnswer);
+            
         }
 
         function updateProgress() {
@@ -120,8 +123,10 @@
             if (isCorrect) {
                 score++;
             }
+            updateProgress();
+            nextQuestion();
 
-            showResult(isCorrect, correctAnswer);
+            // showResult(isCorrect, correctAnswer);
         }
 
         function showResult(isCorrect, correctAnswer) {
@@ -145,8 +150,8 @@
         }
 
         function nextQuestion() {
-            const modal = document.getElementById('resultModal');
-            modal.classList.add('hidden');
+            // const modal = document.getElementById('resultModal');
+            // modal.classList.add('hidden');
 
             currentIndex++;
             answered = false;
@@ -172,12 +177,21 @@
                           '<p class="text-lg text-yellow-400">Keep studying! You\'ll do better next time.</p>'}
                     </div>
                     <div class="flex gap-4">
-                        <a href="/" class="flex-1 px-4 py-3 bg-zinc-700 hover:bg-zinc-600 text-white font-semibold rounded-lg transition-all duration-200">
-                            Back to Home
-                        </a>
-                        <a href="/" class="flex-1 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all duration-200">
-                            Try Another Quiz
-                        </a>
+                        ${isPublicQuiz ? `
+                            <a href="${publicStartUrl}" class="flex-1 px-4 py-3 bg-zinc-700 hover:bg-zinc-600 text-white font-semibold rounded-lg transition-all duration-200 text-center">
+                                Retry Quiz
+                            </a>
+                            <a href="${publicReviewUrl}" class="flex-1 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all duration-200">
+                                Review Questions
+                            </a>
+                        ` : `
+                            <a href="${internalStartUrl}" class="flex-1 px-4 py-3 bg-zinc-700 hover:bg-zinc-600 text-white font-semibold rounded-lg transition-all duration-200 text-center">
+                                Retry Quiz
+                            </a>
+                            <a href="${internalReviewUrl}" class="flex-1 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all duration-200">
+                                Review Questions
+                            </a>
+                        `}
                     </div>
                 </div>
             `;

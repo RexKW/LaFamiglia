@@ -19,7 +19,7 @@ class Middleware
     public function handle(Request $request, Closure $next): Response
     {
         if (!session()->has('is_logged_in')) {
-            return redirect('/login')->with('error', 'Please log in first.');
+            return redirect('/')->with('error', 'Please log in first.');
         }
 
         // if (session('role') !== $role) {

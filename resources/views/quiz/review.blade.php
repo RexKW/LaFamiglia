@@ -1,5 +1,11 @@
 <x-template>
     <div class="w-full h-full mt-32">
+        @if($quiz->user_id == auth()->id() && ! request()->route('token'))
+            <a href="/home">
+                Back
+            </a>
+            @endif
+
         <!-- Header Section -->
         <div class="text-center mb-8">
             <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl mb-4 shadow-lg">
@@ -7,8 +13,16 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
                 </svg>
             </div>
-            <h1 class="text-4xl font-bold text-white mb-2">Review Your Questions</h1>
+            <h1 class="text-4xl font-bold text-white mb-2">Questions</h1>
             <p class="text-zinc-400 text-lg">{{ $quiz->flashcards->count() }} questions generated</p>
+            @if($quiz->user_id == auth()->id() && ! request()->route('token'))
+                <form action="{{ route('quiz.share', $quiz->id) }}" method="POST" class="mt-4">
+                    @csrf
+                    <button type="submit" class="px-6 py-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl">
+                        Share Quiz
+                    </button>
+                </form>
+            @endif
         </div>
 
         @if ($message = Session::get('success'))
@@ -66,9 +80,11 @@
 
         <!-- Action Buttons -->
         <div class="flex gap-4 justify-center">
-            <a href="/home" class="px-8 py-3 bg-zinc-700 hover:bg-zinc-600 text-white font-semibold rounded-lg transition-all duration-200">
-                Create New Quiz
-            </a>
+            @if(!$quiz->share_token)
+                <a href="/home" class="px-8 py-3 bg-zinc-700 hover:bg-zinc-600 text-white font-semibold rounded-lg transition-all duration-200">
+                    Create New Quiz
+                </a>
+            @endif
             <a href="{{ route('quiz.start', $quiz->id) }}" class="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl">
                 Start Quiz
             </a>
