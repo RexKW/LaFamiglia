@@ -91,7 +91,7 @@ class FlashcardController extends Controller
             }
 
             return redirect()
-                ->route('quiz.start', $quiz->id)
+                ->route('home')
                 ->with('success', 'Flashcards generated successfully!');
 
         } catch (\Exception $e) {
