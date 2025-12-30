@@ -7,9 +7,9 @@
             <div class="flex justify-between items-center mb-6">
                 <h1 class="text-4xl font-bold text-white font-mono tracking-wider">Your Quizzes</h1>
                 <div class="flex items-center gap-3">
-                    <span class="text-white text-xl font-bold font-mono">{{ auth()->user()->name ?? 'Username' }}</span>
+                    <span class="text-white text-xl font-bold font-mono">{{ auth()->user()->username ?? 'Username' }}</span>
                     <div class="w-12 h-12 bg-gray-300 rounded-full overflow-hidden border-2 border-white">
-                         <img src="https://api.dicebear.com/9.x/pixel-art/svg?seed={{ auth()->user()->name ?? 'User' }}" alt="avatar" class="w-full h-full object-cover">
+                         <img src="https://api.dicebear.com/9.x/pixel-art/svg?seed={{ auth()->user()->username ?? 'User' }}" alt="avatar" class="w-full h-full object-cover">
                     </div>
                 </div>
             </div>
