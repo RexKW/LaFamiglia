@@ -1,44 +1,48 @@
 <x-loginRegisterTemplate>
-    <form action="{{ route('registerUser') }}" method="POST">
+    <form action="{{ route('registerUser') }}" method="POST" class="w-full">
         @csrf
-        <div>
-            <h2 class="text-2xl font-semibold text-white mb-6 text-center">Register a new Account</h2>
+        <div class="flex flex-col gap-4">
+            <h2 class="text-3xl font-bold text-white text-center font-mono mb-4 tracking-wide">Welcome to LaFamiglia</h2>
 
-            <!-- Username Field -->
-            <div class="mb-4">
-                <label for="username" class="block text-sm font-medium text-zinc-300 mb-2">Username</label>
-                <input type="text" name="username" id="username" required
-                    class="w-full bg-zinc-900/50 border border-zinc-700 rounded-2xl p-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent transition-all duration-200">
-            </div>
+            <!-- Username & Email Row -->
+            <div class="flex flex-col md:flex-row gap-4">
+                <!-- Username Field -->
+                <div class="flex-1">
+                    <label for="username" class="block text-white font-bold font-mono mb-2 text-sm">Username</label>
+                    <input type="text" name="username" id="username" required placeholder="Insert Username"
+                        class="w-full bg-[#2A3B3E] text-zinc-400 px-4 py-3 rounded-lg border-2 border-[#5A6B6F] focus:outline-none focus:border-white font-mono placeholder-zinc-500">
+                </div>
 
-            <!-- Email Field -->
-            <div class="mb-4">
-                <label for="email" class="block text-sm font-medium text-zinc-300 mb-2">Email</label>
-                <input type="email" name="email" id="email" required
-                    class="w-full bg-zinc-900/50 border border-zinc-700 rounded-2xl p-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent transition-all duration-200">
+                <!-- Email Field -->
+                <div class="flex-1">
+                    <label for="email" class="block text-white font-bold font-mono mb-2 text-sm">Email</label>
+                    <input type="email" name="email" id="email" required placeholder="Insert Email"
+                        class="w-full bg-[#2A3B3E] text-zinc-400 px-4 py-3 rounded-lg border-2 border-[#5A6B6F] focus:outline-none focus:border-white font-mono placeholder-zinc-500">
+                </div>
             </div>
 
             <!-- Password Field -->
-            <div class="mb-6">
-                <label for="password" class="block text-sm font-medium text-zinc-300 mb-2">Password</label>
-                <input type="password" name="password" id="password" required
-                    class="w-full bg-zinc-900/50 border border-zinc-700 rounded-2xl p-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent transition-all duration-200">
+            <div>
+                <label for="password" class="block text-white font-bold font-mono mb-2 text-sm">Password</label>
+                <input type="password" name="password" id="password" required placeholder="Insert Password"
+                    class="w-full bg-[#2A3B3E] text-zinc-400 px-4 py-3 rounded-lg border-2 border-[#5A6B6F] focus:outline-none focus:border-white font-mono placeholder-zinc-500">
             </div>
 
             <!-- Confirm Password Field -->
-            <div class="mb-6">
-                <label for="confirm_password" class="block text-sm font-medium text-zinc-300 mb-2">Confirm Password</label>
-                <input type="password" name="confirm_password" id="confirm_password" required
-                    class="w-full bg-zinc-900/50 border border-zinc-700 rounded-2xl p-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent transition-all duration-200">
+            <div>
+                <label for="confirm_password" class="block text-white font-bold font-mono mb-2 text-sm">Confirm Password</label>
+                <input type="password" name="confirm_password" id="confirm_password" required placeholder="insert Confirm Password"
+                    class="w-full bg-[#2A3B3E] text-zinc-400 px-4 py-3 rounded-lg border-2 border-[#5A6B6F] focus:outline-none focus:border-white font-mono placeholder-zinc-500">
             </div>
 
             <!-- Submit Button -->
-            <button type="submit"
-                class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 rounded-2xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98]">
-                Register
-            </button>
-
-            <p class="w-full text-center mt-2">Already have an account? <a href="/" class="text-blue-500 hover:underline">Login here</a>.</p>
+            <div class="flex justify-center mt-6">
+                <button type="submit"
+                    class="px-12 py-3 bg-[#0093FE] text-white font-bold rounded-lg border-b-4 border-[#0073C7] active:border-b-0 active:translate-y-1 transition-all font-mono text-xl shadow-lg">
+                    Register
+                </button>
+            </div>
+            <p class="w-full text-center mt-4 text-zinc-400 font-mono">Already have an account? <a href="/login" class="text-[#0093FE] hover:text-[#0073C7] hover:underline">Login here</a>.</p>
         </div>
     </form>
 </x-loginRegisterTemplate>

@@ -39,6 +39,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/quiz/{quiz}/check-answer', [QuizController::class, 'checkAnswer'])->name('quiz.check.answer');
     Route::delete('/quiz/{id}', [QuizController::class, 'destroy'])->name('quiz.destroy');
     Route::post('/quiz/{quiz}/share', [QuizController::class, 'share'])->name('quiz.share');
+    Route::get('/account', [UserController::class, 'account'])->name('account');
 });
 
 // Public shareable routes (no auth required)
