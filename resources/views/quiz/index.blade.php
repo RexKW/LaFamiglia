@@ -20,7 +20,7 @@
             <div class="flex flex-col md:flex-row gap-4 mb-6">
                 <!-- Search -->
                 <div class="flex-1 relative">
-                    <input type="text" placeholder="Search" class="w-full bg-[#2A3B3E] text-zinc-400 px-4 py-3 rounded-lg border-2 border-[#5A6B6F] focus:outline-none focus:border-white font-mono placeholder-zinc-500">
+                    <input type="text" id="searchInput" placeholder="Search" class="w-full bg-[#2A3B3E] text-zinc-400 px-4 py-3 rounded-lg border-2 border-[#5A6B6F] focus:outline-none focus:border-white font-mono placeholder-zinc-500">
                     <svg class="w-6 h-6 absolute right-3 top-3 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                     </svg>
@@ -50,9 +50,9 @@
 
             <!-- List Container -->
             <div class="bg-[#A3ACB9] rounded-xl p-4 h-[600px] overflow-y-auto custom-scrollbar">
-                <div class="flex flex-col gap-3">
+                <div class="flex flex-col gap-3" id="quizList">
                     @foreach ($quizzes as $quiz)
-                        <div class="bg-[#3B5155] p-3 rounded-lg flex flex-col md:flex-row items-center justify-between border-2 border-[#2A3B3E] shadow-md gap-4">
+                        <div class="quiz-item bg-[#3B5155] p-3 rounded-lg flex flex-col md:flex-row items-center justify-between border-2 border-[#2A3B3E] shadow-md gap-4" data-name="{{ strtolower($quiz->name) }}">
                             <!-- Left: Name -->
                             <div class="pl-2 w-full md:w-auto text-center md:text-left flex items-center gap-2">
                                 <div id="name-display-{{ $quiz->id }}" class="flex items-center gap-2">
@@ -138,6 +138,23 @@
             if (!menu.classList.contains('hidden') && !button && !menu.contains(event.target)) {
                 menu.classList.add('hidden');
             }
+        });
+
+        // Search Functionality
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const quizItems = document.querySelectorAll('.quiz-item');
+            let hasVisibleItems = false;
+
+            quizItems.forEach(item => {
+                const name = item.getAttribute('data-name');
+                if (name.includes(searchTerm)) {
+                    item.style.display = 'flex';
+                    hasVisibleItems = true;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
         });
 
         function toggleRename(id) {
