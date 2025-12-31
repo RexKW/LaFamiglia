@@ -1,16 +1,15 @@
 <x-template>
-    <div class="w-full max-w-3xl">
-        <!-- Header Section -->
-        <div class="text-center mb-8">
-            <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl mb-4 shadow-lg">
-                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+    <div class="w-full h-full min-h-screen flex flex-col items-center justify-center relative py-12">
+
+        <div class="p-4 bg-[#3B5155] absolute top-5 left-5 border border-[#A3ACB9] border-2 rounded-2xl shadow-lg z-10">
+            <a href="/home" class="block hover:opacity-80 transition-opacity">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 64 64" fill="none">
+                    <path d="M2.66675 34.6667V29.3333H5.33341V26.6667H8.00008V24H10.6667V21.3333H13.3334V18.6667H16.0001V16H18.6667V13.3333H21.3334V10.6667H24.0001V8H26.6667V5.33333H29.3334V2.66667H32.0001V5.33333H34.6667V8H37.3334V10.6667H34.6667V13.3333H32.0001V16H29.3334V18.6667H26.6667V21.3333H24.0001V24H21.3334V26.6667H61.3334V37.3333H21.3334V40H24.0001V42.6667H26.6667V45.3333H29.3334V48H32.0001V50.6667H34.6667V53.3333H37.3334V56H34.6667V58.6667H32.0001V61.3333H29.3334V58.6667H26.6667V56H24.0001V53.3333H21.3334V50.6667H18.6667V48H16.0001V45.3333H13.3334V42.6667H10.6667V40H8.00008V37.3333H5.33341V34.6667H2.66675Z" fill="#1C2C30"/>
                 </svg>
-            </div>
-            <h1 class="text-4xl font-bold text-white mb-2">Quiz Time</h1>
-            <p class="text-zinc-400 text-lg">{{ $quiz->name }}</p>
+            </a>
         </div>
 
+<<<<<<< Updated upstream
         <!-- Progress Bar -->
         <div class="mb-8">
             <div class="flex justify-between items-center mb-2">
@@ -43,12 +42,41 @@
                     </button>
                 </div>
             </div>
+=======
+        <div class="w-full max-w-4xl">
+            
+            <div class="mb-4 px-2" id="progressContainer">
+                <div class="flex justify-between items-center mb-2 font-mono">
+                    <span class="text-sm text-[#A3ACB9]">PROGRESS</span>
+                    <span class="text-sm text-white" id="progressText">1 / {{ $questions->count() }}</span>
+                </div>
+                <div class="w-full bg-[#1C2C30] rounded-full h-4 border-2 border-[#A3ACB9]">
+                    <div class="bg-[#0093FE] h-full rounded-full transition-all duration-300 border-r-2 border-[#A3ACB9]" id="progressBar" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div class="bg-[#3B5155] border-2 border-[#A3ACB9] rounded-xl p-8 shadow-2xl min-h-[500px] flex flex-col justify-center">
+                <div id="quizContainer" class="w-full">
+                    </div>
+            </div>
+>>>>>>> Stashed changes
         </div>
     </div>
 
     <script>
+        // Define all variables at the top to prevent errors
         const questions = @json($questions);
+        const quizName = "{{ $quiz->name }}"; // Crucial for the results page
         const quizId = {{ $quiz->id }};
+<<<<<<< Updated upstream
+=======
+        const isPublicQuiz = {{ $quiz->share_token ? 'true' : 'false' }};
+        const publicStartUrl = "{{ $quiz->share_token ? route('quiz.public.start', $quiz->share_token) : '' }}";
+        const publicReviewUrl = "{{ $quiz->share_token ? route('quiz.public.review', $quiz->share_token) : '' }}";
+        const internalStartUrl = "{{ route('quiz.start', $quiz->id) }}";
+        const internalReviewUrl = "{{ route('quiz.review', $quiz->id) }}";
+        
+>>>>>>> Stashed changes
         let currentIndex = 0;
         let answered = false;
         let score = 0;
@@ -62,23 +90,36 @@
                 question.wrong_answer_3,
             ].sort(() => Math.random() - 0.5);
 
+            // Question Layout (No Bold)
             const html = `
-                <div class="mb-8">
-                    <p class="text-sm text-zinc-400 mb-2">Question ${currentIndex + 1} of ${questions.length}</p>
-                    <h2 class="text-2xl font-bold text-white">${question.question}</h2>
-                </div>
+                <div class="flex flex-col w-full">
+                    <div class="text-center mb-6">
+                        <div class="text-6xl font-mono text-white tracking-tight">Question ${currentIndex + 1}</div>
+                    </div>
 
-                <div class="space-y-3">
-                    ${answers.map((answer, idx) => `
-                        <button 
-                            onclick="handleAnswerClick(this)"
-                            class="w-full text-left p-4 bg-zinc-900/50 border-2 border-zinc-700 rounded-lg hover:border-blue-500 hover:bg-zinc-900 transition-all duration-200 text-white font-medium answer-btn"
-                            data-answer="${answer.replace(/"/g, '&quot;')}"
-                            ${answered ? 'disabled' : ''}
-                        >
-                            ${answer}
-                        </button>
-                    `).join('')}
+                    <div class="w-full text-left mb-2 px-1">
+                        <h2 class="text-2xl text-white font-mono leading-tight">${question.question}</h2>
+                    </div>
+
+                    <div class="w-full bg-[#A3ACB9] p-4 rounded-xl border-2 border-[#A3ACB9]">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            ${answers.map((answer, idx) => `
+                                <button 
+                                    onclick="handleAnswerClick(this)"
+                                    class="w-full h-40 flex items-center justify-center p-6 
+                                           bg-[#1C2C30] border-4 border-[#1C2C30] rounded-lg
+                                           hover:bg-[#0093FE] hover:border-[#0073C7] hover:translate-y-[-2px]
+                                           transition-all duration-150 ease-out
+                                           text-white text-xl font-mono text-center leading-snug shadow-sm
+                                           answer-btn active:scale-95"
+                                    data-answer="${answer.replace(/"/g, '&quot;')}"
+                                    ${answered ? 'disabled' : ''}
+                                >
+                                    ${answer}
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
                 </div>
             `;
 
@@ -108,10 +149,20 @@
             const answerBtns = document.querySelectorAll('.answer-btn');
             answerBtns.forEach(btn => {
                 const answer = btn.getAttribute('data-answer');
+                
+                // Remove hover
+                btn.classList.remove('hover:bg-[#0093FE]', 'hover:border-[#0073C7]', 'hover:translate-y-[-2px]');
+                
                 if (answer === correctAnswer) {
-                    btn.classList.add('border-green-500', 'border-2', 'bg-green-500/10');
+                    // Green
+                    btn.classList.remove('bg-[#1C2C30]', 'border-[#1C2C30]');
+                    btn.classList.add('bg-[#51F1A9]', 'border-[#3DBD85]', 'text-[#1C2C30]'); 
                 } else if (answer === selectedAnswer && selectedAnswer !== correctAnswer) {
-                    btn.classList.add('border-red-500', 'border-2', 'bg-red-500/10');
+                    // Red
+                    btn.classList.remove('bg-[#1C2C30]', 'border-[#1C2C30]');
+                    btn.classList.add('bg-[#FE4C40]', 'border-[#CC3D33]', 'text-white');
+                } else {
+                    btn.classList.add('opacity-50');
                 }
                 btn.disabled = true;
             });
@@ -120,6 +171,7 @@
             if (isCorrect) {
                 score++;
             }
+<<<<<<< Updated upstream
 
             showResult(isCorrect, correctAnswer);
         }
@@ -148,6 +200,15 @@
             const modal = document.getElementById('resultModal');
             modal.classList.add('hidden');
 
+=======
+            
+            setTimeout(() => {
+                nextQuestion();
+            }, 1500);
+        }
+
+        function nextQuestion() {
+>>>>>>> Stashed changes
             currentIndex++;
             answered = false;
 
@@ -160,17 +221,27 @@
 
         function showFinalResults() {
             const percentage = Math.round((score / questions.length) * 100);
+            
+            // Generate Date: YYYY-MM-DD HH:MM
+            const now = new Date();
+            const dateString = now.getFullYear() + '-' + 
+                String(now.getMonth() + 1).padStart(2, '0') + '-' + 
+                String(now.getDate()).padStart(2, '0') + ' ' + 
+                String(now.getHours()).padStart(2, '0') + ':' + 
+                String(now.getMinutes()).padStart(2, '0');
+
+            // Result HTML (No Bold)
             const html = `
-                <div class="text-center">
-                    <div class="mb-6">
-                        <div class="text-6xl font-bold text-white mb-2">${percentage}%</div>
-                        <div class="text-2xl font-semibold text-zinc-300">You scored ${score} out of ${questions.length}</div>
+                <div class="text-center py-4">
+                    
+                    <div class="mb-2">
+                        <h1 class="text-5xl md:text-6xl text-white font-mono tracking-tight">Quiz Results</h1>
                     </div>
-                    <div class="mb-8">
-                        ${percentage >= 80 ? '<p class="text-lg text-green-400">Excellent work! 🎉</p>' : 
-                          percentage >= 60 ? '<p class="text-lg text-blue-400">Good effort! Keep practicing.</p>' :
-                          '<p class="text-lg text-yellow-400">Keep studying! You\'ll do better next time.</p>'}
+
+                    <div class="mb-10">
+                        <p class="text-4xl text-white font-mono">${quizName} - ${dateString}</p>
                     </div>
+<<<<<<< Updated upstream
                     <div class="flex gap-4">
                         <a href="/" class="flex-1 px-4 py-3 bg-zinc-700 hover:bg-zinc-600 text-white font-semibold rounded-lg transition-all duration-200">
                             Back to Home
@@ -178,16 +249,46 @@
                         <a href="/" class="flex-1 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all duration-200">
                             Try Another Quiz
                         </a>
+=======
+                    
+                    <div class="mb-4">
+                        <div class="text-8xl text-white font-mono tracking-tighter">${percentage}%</div>
+                    </div>
+
+                    <div class="mb-12">
+                        <p class="text-4xl text-white font-mono">You got ${score} out of ${questions.length} questions right</p>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row gap-6 justify-center w-full max-w-2xl mx-auto px-4">
+                        ${isPublicQuiz ? `
+                            <a href="${publicStartUrl}" class="flex-1 px-8 py-4 bg-[#A3ACB9] hover:bg-[#929bab] text-white text-xl font-mono rounded-xl border-b-8 border-[#7A8C99] active:border-b-0 active:translate-y-2 transition-all text-center shadow-lg">
+                                Retry Quiz
+                            </a>
+                            <a href="${publicReviewUrl}" class="flex-1 px-8 py-4 bg-[#0093FE] hover:bg-[#0073C7] text-white text-xl font-mono rounded-xl border-b-8 border-[#0073C7] active:border-b-0 active:translate-y-2 transition-all shadow-lg text-center">
+                                Review Questions
+                            </a>
+                        ` : `
+                            <a href="${internalStartUrl}" class="flex-1 px-8 py-4 bg-[#A3ACB9] hover:bg-[#929bab] text-white text-xl font-mono rounded-xl border-b-8 border-[#7A8C99] active:border-b-0 active:translate-y-2 transition-all text-center shadow-lg">
+                                Retry Quiz
+                            </a>
+                            <a href="${internalReviewUrl}" class="flex-1 px-8 py-4 bg-[#0093FE] hover:bg-[#0073C7] text-white text-xl font-mono rounded-xl border-b-8 border-[#0073C7] active:border-b-0 active:translate-y-2 transition-all shadow-lg text-center">
+                                Review Questions
+                            </a>
+                        `}
+>>>>>>> Stashed changes
                     </div>
                 </div>
             `;
 
             document.getElementById('quizContainer').innerHTML = html;
+            
+            // Hide the progress bar container when results are shown
+            const progressContainer = document.getElementById('progressContainer');
+            if(progressContainer) progressContainer.style.display = 'none';
         }
 
-        // Initialize
+        // Initialize the quiz
         renderQuestion();
 
-        
     </script>
 </x-template>
