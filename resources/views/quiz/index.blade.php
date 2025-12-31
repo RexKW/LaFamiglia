@@ -27,9 +27,20 @@
                 </div>
 
                 <!-- Sort By -->
-                <button class="px-6 py-3 bg-[#A3ACB9] text-white font-bold rounded-lg border-b-4 border-[#7A8C99] active:border-b-0 active:translate-y-1 transition-all font-mono whitespace-nowrap">
-                    Sort By
-                </button>
+                <div class="relative">
+                    <button onclick="toggleSortMenu()" class="px-6 py-3 bg-[#A3ACB9] text-white font-bold rounded-lg border-b-4 border-[#7A8C99] active:border-b-0 active:translate-y-1 transition-all font-mono whitespace-nowrap flex items-center gap-2">
+                        Sort By
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                    <div id="sort-menu" class="hidden absolute top-full left-0 mt-2 w-48 bg-[#3B5155] border-2 border-[#A3ACB9] rounded-lg shadow-xl z-20 overflow-hidden">
+                        <a href="{{ route('home', ['sort' => 'created_at', 'direction' => 'desc']) }}" class="block px-4 py-3 text-white hover:bg-[#2A3B3E] font-mono border-b border-[#2A3B3E]">Date (Newest)</a>
+                        <a href="{{ route('home', ['sort' => 'created_at', 'direction' => 'asc']) }}" class="block px-4 py-3 text-white hover:bg-[#2A3B3E] font-mono border-b border-[#2A3B3E]">Date (Oldest)</a>
+                        <a href="{{ route('home', ['sort' => 'name', 'direction' => 'asc']) }}" class="block px-4 py-3 text-white hover:bg-[#2A3B3E] font-mono border-b border-[#2A3B3E]">Name (A-Z)</a>
+                        <a href="{{ route('home', ['sort' => 'name', 'direction' => 'desc']) }}" class="block px-4 py-3 text-white hover:bg-[#2A3B3E] font-mono">Name (Z-A)</a>
+                    </div>
+                </div>
 
                 <!-- New Quiz -->
                 <a href="/generate-flashcards" class="px-6 py-3 bg-[#0093FE] text-white font-bold rounded-lg border-b-4 border-[#0073C7] active:border-b-0 active:translate-y-1 transition-all font-mono whitespace-nowrap flex items-center justify-center">
@@ -43,8 +54,30 @@
                     @foreach ($quizzes as $quiz)
                         <div class="bg-[#3B5155] p-3 rounded-lg flex flex-col md:flex-row items-center justify-between border-2 border-[#2A3B3E] shadow-md gap-4">
                             <!-- Left: Name -->
-                            <div class="pl-2 w-full md:w-auto text-center md:text-left">
-                                <h3 class="text-white text-xl font-bold font-mono">{{ $quiz->name }}</h3>
+                            <div class="pl-2 w-full md:w-auto text-center md:text-left flex items-center gap-2">
+                                <div id="name-display-{{ $quiz->id }}" class="flex items-center gap-2">
+                                    <h3 class="text-white text-xl font-bold font-mono">{{ $quiz->name }}</h3>
+                                    <button onclick="toggleRename({{ $quiz->id }})" class="text-zinc-400 hover:text-white transition-colors">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <form id="name-form-{{ $quiz->id }}" action="{{ route('quiz.update', $quiz->id) }}" method="POST" class="hidden flex items-center gap-2">
+                                    @csrf
+                                    @method('PATCH')
+                                    <input type="text" name="name" value="{{ $quiz->name }}" class="bg-[#2A3B3E] text-white px-2 py-1 rounded border border-[#5A6B6F] focus:outline-none font-mono w-96">
+                                    <button type="submit" class="text-[#51F1A9] hover:text-[#65ffb9]">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                    </button>
+                                    <button type="button" onclick="toggleRename({{ $quiz->id }})" class="text-[#FE4C40] hover:text-[#ff6b61]">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </form>
                             </div>
 
                             <!-- Right: Info & Actions -->
@@ -90,4 +123,36 @@
 
         </div>
     </div>
+
+    <script>
+        function toggleSortMenu() {
+            const menu = document.getElementById('sort-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('sort-menu');
+            const button = event.target.closest('button');
+            
+            if (!menu.classList.contains('hidden') && !button && !menu.contains(event.target)) {
+                menu.classList.add('hidden');
+            }
+        });
+
+        function toggleRename(id) {
+            const display = document.getElementById(`name-display-${id}`);
+            const form = document.getElementById(`name-form-${id}`);
+            
+            if (display.classList.contains('hidden')) {
+                display.classList.remove('hidden');
+                form.classList.add('hidden');
+            } else {
+                display.classList.add('hidden');
+                form.classList.remove('hidden');
+                // Focus input
+                form.querySelector('input').focus();
+            }
+        }
+    </script>
 </x-template>

@@ -1,7 +1,7 @@
 <x-template>
     <div class="w-full h-full min-h-screen flex flex-col items-center justify-center relative py-12">
 
-        <div class="p-4 bg-[#3B5155] absolute top-5 left-5 border border-[#A3ACB9] border-2 rounded-2xl shadow-lg z-10">
+        <div class="p-4 bg-[#3B5155] fixed top-5 left-5 border border-[#A3ACB9] border-2 rounded-2xl shadow-lg z-10">
             <a href="/home" class="block hover:opacity-80 transition-opacity">
                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 64 64" fill="none">
                     <path d="M2.66675 34.6667V29.3333H5.33341V26.6667H8.00008V24H10.6667V21.3333H13.3334V18.6667H16.0001V16H18.6667V13.3333H21.3334V10.6667H24.0001V8H26.6667V5.33333H29.3334V2.66667H32.0001V5.33333H34.6667V8H37.3334V10.6667H34.6667V13.3333H32.0001V16H29.3334V18.6667H26.6667V21.3333H24.0001V24H21.3334V26.6667H61.3334V37.3333H21.3334V40H24.0001V42.6667H26.6667V45.3333H29.3334V48H32.0001V50.6667H34.6667V53.3333H37.3334V56H34.6667V58.6667H32.0001V61.3333H29.3334V58.6667H26.6667V56H24.0001V53.3333H21.3334V50.6667H18.6667V48H16.0001V45.3333H13.3334V42.6667H10.6667V40H8.00008V37.3333H5.33341V34.6667H2.66675Z" fill="#1C2C30"/>
@@ -42,6 +42,7 @@
         let currentIndex = 0;
         let answered = false;
         let score = 0;
+        let wrongAnswers = [];
 
         function renderQuestion() {
             const question = questions[currentIndex];
@@ -132,6 +133,19 @@
             const isCorrect = selectedAnswer === correctAnswer;
             if (isCorrect) {
                 score++;
+            } else {
+                const question = questions[currentIndex];
+                wrongAnswers.push({
+                    question: question.question,
+                    selected: selectedAnswer,
+                    correct: correctAnswer,
+                    options: [
+                        question.correct_answer,
+                        question.wrong_answer_1,
+                        question.wrong_answer_2,
+                        question.wrong_answer_3
+                    ].sort(() => Math.random() - 0.5)
+                });
             }
             
             setTimeout(() => {
@@ -161,6 +175,54 @@
                 String(now.getHours()).padStart(2, '0') + ':' + 
                 String(now.getMinutes()).padStart(2, '0');
 
+            let wrongAnswersHtml = '';
+            if (wrongAnswers.length > 0) {
+                wrongAnswersHtml = `
+                    <div class="w-full text-left mb-8">
+                        <h2 class="text-3xl text-white font-mono mb-4 text-center">Incorrect Answers</h2>
+                        <div class="flex-1 overflow-y-auto custom-scrollbar bg-[#2A3B3E] border-2 border-[#A3ACB9] rounded-xl space-y-4 mb-6 shadow-inner max-h-[500px]">
+                            <div class="p-4 space-y-4">
+                                ${wrongAnswers.map((item, index) => `
+                                    <div class="bg-[#3B5155] rounded-xl border-2 border-[#1C2C30] p-6 shadow-md">
+                                        <div class="flex flex-col mb-4">
+                                            <div class="text-sm font-mono text-zinc-400 mb-2">QUESTION</div>
+                                            <h3 class="text-xl text-white font-mono">${item.question}</h3>
+                                        </div>
+
+                                        <div class="space-y-2 font-mono">
+                                            ${item.options.map(opt => {
+                                                if (opt === item.correct) {
+                                                    return `
+                                                    <div class="flex items-center p-3 bg-[#51F1A9]/10 border-2 border-[#51F1A9] rounded-lg">
+                                                        <svg class="w-5 h-5 text-[#51F1A9] mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                                        </svg>
+                                                        <span class="text-[#51F1A9]">${opt.replace(/"/g, '&quot;')}</span>
+                                                    </div>`;
+                                                } else if (opt === item.selected) {
+                                                    return `
+                                                    <div class="flex items-center p-3 bg-[#FE4C40]/10 border-2 border-[#FE4C40] rounded-lg">
+                                                        <svg class="w-5 h-5 text-[#FE4C40] mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                        </svg>
+                                                        <span class="text-[#FE4C40]">${opt.replace(/"/g, '&quot;')}</span>
+                                                    </div>`;
+                                                } else {
+                                                    return `
+                                                    <div class="flex items-center p-3 bg-[#2A3B3E] border-2 border-[#1C2C30] rounded-lg opacity-60">
+                                                        <span class="text-zinc-400">${opt.replace(/"/g, '&quot;')}</span>
+                                                    </div>`;
+                                                }
+                                            }).join('')}
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
             // Result HTML (No Bold)
             const html = `
                 <div class="text-center py-4">
@@ -170,7 +232,8 @@
                     </div>
 
                     <div class="mb-10">
-                        <p class="text-4xl text-white font-mono">${quizName} - ${dateString}</p>
+                        <p class="text-4xl text-white font-mono mb-2">${quizName}</p>
+                        <p class="text-xl text-zinc-400 font-mono">Date Done: ${dateString}</p>
                     </div>
                     
                     <div class="mb-4">
@@ -180,6 +243,8 @@
                     <div class="mb-12">
                         <p class="text-4xl text-white font-mono">You got ${score} out of ${questions.length} questions right</p>
                     </div>
+
+                    ${wrongAnswersHtml}
 
                     <div class="flex flex-col md:flex-row gap-6 justify-center w-full max-w-2xl mx-auto px-4">
                         ${isPublicQuiz ? `

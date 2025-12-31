@@ -38,6 +38,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/quiz/{quiz}/start', [QuizController::class, 'start'])->name('quiz.start');
     Route::post('/quiz/{quiz}/check-answer', [QuizController::class, 'checkAnswer'])->name('quiz.check.answer');
     Route::delete('/quiz/{id}', [QuizController::class, 'destroy'])->name('quiz.destroy');
+    Route::patch('/quiz/{quiz}', [QuizController::class, 'update'])->name('quiz.update');
     Route::post('/quiz/{quiz}/share', [QuizController::class, 'share'])->name('quiz.share');
     Route::get('/account', [UserController::class, 'account'])->name('account');
 });

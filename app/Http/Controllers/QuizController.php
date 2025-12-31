@@ -9,11 +9,22 @@ use Illuminate\Support\Str;
 class QuizController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        $quizzes = Quiz::where('user_id', auth()->id())
-        ->withCount('flashcards')
-        ->get();
+        $query = Quiz::where('user_id', auth()->id())->withCount('flashcards');
+
+        if ($request->has('sort') && $request->has('direction')) {
+            $sort = $request->input('sort');
+            $direction = $request->input('direction');
+
+            if (in_array($sort, ['name', 'created_at']) && in_array($direction, ['asc', 'desc'])) {
+                $query->orderBy($sort, $direction);
+            }
+        } else {
+            $query->orderBy('created_at', 'desc');
+        }
+
+        $quizzes = $query->get();
 
         return view('quiz.index', compact('quizzes'));
     }
@@ -114,8 +125,21 @@ class QuizController extends Controller
 
         $quiz->delete();
 
-        return view('quiz.index')->with('success', 'Quiz deleted successfully.');
+        return redirect()->route('home')->with('success', 'Quiz deleted successfully.');
     }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $quiz = Quiz::where('id', $id)->where('user_id', auth()->id())->firstOrFail();
+        $quiz->update(['name' => $request->name]);
+
+        return back()->with('success', 'Quiz renamed successfully.');
+    }
+
 
 
     public function checkAnswer(Request $request, $quizId)
