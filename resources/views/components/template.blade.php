@@ -7,27 +7,34 @@
     <title>LaFamiglia</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body  class=" text-white flex flex-col relative items-center justify-center">
+<body  class="font-mono text-white flex flex-col relative items-center justify-center">
     {{-- <x-navBar /> --}}
-    
+
     <div id="loader" class="z-0 fixed top-0 w-screen h-screen">
         </div>
-    <div class="flex relative z-10 flex-col w-full min-h-screen items-center justify-center p-4">
-        
+    <div id="swup" class="flex relative z-10 flex-col w-full min-h-screen items-center justify-center p-4">
+
         {{ $slot }}
     </div>
-    
+
 </body>
 <script src="/js/balatroShader.js"></script>
+<script src="https://unpkg.com/swup@4"></script>
+<script src="https://unpkg.com/@swup/scripts-plugin@2"></script>
 <script>
-        const fx = new BalatroShader({
-            container: "#loader",
-            colours: { c1: "#DE443B", c2: "#006BB4", c3: "#162325" },
-            speed: 1.4,
-            contrast: 2,
-            spinAmount: 0.5,
-            pixelSizeFac: 1000,
-            spinEase: 0.5
-        });
-    </script>
+    const fx = new BalatroShader({
+        container: "#loader",
+        colours: { c1: "#DE443B", c2: "#006BB4", c3: "#162325" },
+        speed: 1.4,
+        contrast: 2,
+        spinAmount: 0.5,
+        pixelSizeFac: 1000,
+        spinEase: 0.5
+    });
+
+    const swup = new Swup({
+        containers: ["#swup"],
+        plugins: [new SwupScriptsPlugin()]
+    });
+</script>
 </html>

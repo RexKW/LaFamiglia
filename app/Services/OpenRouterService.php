@@ -18,7 +18,7 @@ class OpenRouterService
     {
         $body = [
             "model" => "tngtech/tng-r1t-chimera:free",
-            // "model" => "amazon/nova-2-lite-v1:free",
+            // "model" => "google/gemini-2.0-flash-exp:free", // Note: Free models require "Allow model training" in OpenRouter privacy settings
             "messages" => $messages,
             "temperature" => 0.6,
         ];
@@ -28,7 +28,7 @@ class OpenRouterService
             $body["tool_choice"] = "auto";
         }
 
-        return Http::withoutVerifying() 
+        return Http::withoutVerifying()
             ->withHeaders([
                 "Authorization" => "Bearer {$this->apiKey}",
                 "Content-Type" => "application/json",

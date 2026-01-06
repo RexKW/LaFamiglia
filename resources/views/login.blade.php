@@ -1,29 +1,31 @@
 <x-loginRegisterTemplate>
-    <form action="{{ route('loginUser') }}" method="POST">
+    <form action="{{ route('loginUser') }}" method="POST" class="w-full">
         @csrf
-        <div>
-            <h2 class="text-2xl font-semibold text-white mb-6 text-center">Login to Your Account</h2>
+        <div class="flex flex-col gap-4">
+            <h2 class="text-3xl font-bold text-white text-center font-mono mb-4 tracking-wide">Welcome to LaFamiglia</h2>
 
             <!-- Username Field -->
-            <div class="mb-4">
-                <label for="username" class="block text-sm font-medium text-zinc-300 mb-2">Username</label>
-                <input type="text" name="username" id="username" required
-                    class="w-full bg-zinc-900/50 border border-zinc-700 rounded-2xl p-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent transition-all duration-200">
+            <div>
+                <label for="username" class="block text-white font-bold font-mono mb-2 text-sm">Username</label>
+                <input type="text" name="username" id="username" required placeholder="Insert Username"
+                    class="w-full bg-[#2A3B3E] text-zinc-400 px-4 py-3 rounded-lg border-2 border-[#5A6B6F] focus:outline-none focus:border-white font-mono placeholder-zinc-500">
             </div>
 
             <!-- Password Field -->
-            <div class="mb-6">
-                <label for="password" class="block text-sm font-medium text-zinc-300 mb-2">Password</label>
-                <input type="password" name="password" id="password" required
-                    class="w-full bg-zinc-900/50 border border-zinc-700 rounded-2xl p-3 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent transition-all duration-200">
+            <div>
+                <label for="password" class="block text-white font-bold font-mono mb-2 text-sm">Password</label>
+                <input type="password" name="password" id="password" required placeholder="Insert Password"
+                    class="w-full bg-[#2A3B3E] text-zinc-400 px-4 py-3 rounded-lg border-2 border-[#5A6B6F] focus:outline-none focus:border-white font-mono placeholder-zinc-500">
             </div>
 
             <!-- Submit Button -->
-            <button type="submit"
-                class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 rounded-2xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98]">
-                Login
-            </button>
-            <p class="w-full text-center mt-2">Don't have an account? <a href="/register" class="text-blue-500 hover:underline">Register here</a>.</p>
+            <div class="flex justify-center mt-6">
+                <button type="submit"
+                    class="px-12 py-3 bg-[#0093FE] text-white font-bold rounded-lg border-b-4 border-[#0073C7] active:border-b-0 active:translate-y-1 transition-all font-mono text-xl shadow-lg">
+                    Login
+                </button>
+            </div>
+            <p class="w-full text-center mt-4 text-zinc-400 font-mono">Don't have an account? <a href="/register" class="text-[#0093FE] hover:text-[#0073C7] hover:underline">Register here</a>.</p>
         </div>
     </form>
 </x-loginRegisterTemplate>
