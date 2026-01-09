@@ -17,7 +17,7 @@
             </div>
 
             <!-- Username -->
-            <h1 class="text-4xl font-bold text-white font-mono mb-1 tracking-wide">{{ auth()->user()->username }}</h1>
+            <h1 class="text-4xl text-white font-mono mb-1 tracking-wide">{{ auth()->user()->username }}</h1>
 
             <!-- Email -->
             <p class="text-zinc-400 font-mono mb-8 text-lg">{{ auth()->user()->email }}</p>
@@ -25,7 +25,7 @@
             <!-- Logout Button -->
             <form action="{{ route('logout') }}" method="POST" class="w-full">
                 @csrf
-                <button type="submit" class="w-full py-3 bg-[#FE4C40] text-white font-bold rounded-lg border-b-4 border-[#CC3D33] active:border-b-0 active:translate-y-1 transition-all font-mono text-2xl shadow-lg">
+                <button type="submit" class="w-full py-3 bg-[#FE4C40] text-white rounded-lg border-b-4 border-[#CC3D33] active:border-b-0 active:translate-y-1 transition-all font-mono text-2xl shadow-lg">
                     Logout
                 </button>
             </form>

@@ -8,7 +8,7 @@
                 <h1 class="text-4xl font-bold text-white font-mono tracking-wider">Your Quizzes</h1>
                 <div class="flex items-center gap-3">
                     <a href="{{ route('account') }}" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
-                        <span class="text-white text-xl font-bold font-mono">{{ auth()->user()->username ?? 'Username' }}</span>
+                        <span class="text-white text-xl font-mono">{{ auth()->user()->username ?? 'Username' }}</span>
                         <div class="w-12 h-12 bg-gray-300 rounded-full overflow-hidden border-2 border-white">
                              <img src="https://api.dicebear.com/9.x/pixel-art/svg?seed={{ auth()->user()->username ?? 'User' }}" alt="avatar" class="w-full h-full object-cover">
                         </div>
@@ -28,7 +28,7 @@
 
                 <!-- Sort By -->
                 <div class="relative">
-                    <button onclick="toggleSortMenu()" class="px-6 py-3 bg-[#A3ACB9] text-white font-bold rounded-lg border-b-4 border-[#7A8C99] active:border-b-0 active:translate-y-1 transition-all font-mono whitespace-nowrap flex items-center gap-2">
+                    <button onclick="toggleSortMenu()" class="px-6 py-3 bg-[#A3ACB9] text-white rounded-lg border-b-4 border-[#7A8C99] active:border-b-0 active:translate-y-1 transition-all font-mono whitespace-nowrap flex items-center gap-2">
                         Sort By
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -43,7 +43,7 @@
                 </div>
 
                 <!-- New Quiz -->
-                <a href="/generate-flashcards" class="px-6 py-3 bg-[#0093FE] text-white font-bold rounded-lg border-b-4 border-[#0073C7] active:border-b-0 active:translate-y-1 transition-all font-mono whitespace-nowrap flex items-center justify-center">
+                <a href="/generate-flashcards" class="px-6 py-3 bg-[#0093FE] text-white rounded-lg border-b-4 border-[#0073C7] active:border-b-0 active:translate-y-1 transition-all font-mono whitespace-nowrap flex items-center justify-center">
                     New Quiz
                 </a>
             </div>
@@ -56,7 +56,7 @@
                             <!-- Left: Name -->
                             <div class="pl-2 w-full md:w-auto text-center md:text-left flex items-center gap-2">
                                 <div id="name-display-{{ $quiz->id }}" class="flex items-center gap-2">
-                                    <h3 class="text-white text-xl font-bold font-mono">{{ $quiz->name }}</h3>
+                                    <h3 class="text-white text-xl font-mono">{{ $quiz->name }}</h3>
                                     <button onclick="toggleRename({{ $quiz->id }})" class="text-zinc-400 hover:text-white transition-colors">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
@@ -82,7 +82,7 @@
 
                             <!-- Right: Info & Actions -->
                             <div class="flex items-center gap-4 w-full md:w-auto justify-center md:justify-end">
-                                <span class="text-white font-bold font-mono mr-2">{{ $quiz->flashcards->count() }} Questions</span>
+                                <span class="text-white font-mono mr-2">{{ $quiz->flashcards->count() }} Questions</span>
 
                                 <!-- Play -->
                                 <a href="{{ route('quiz.start', $quiz->id) }}" class="w-12 h-10 bg-[#51F1A9] rounded flex items-center justify-center border-b-4 border-[#3DBD85] active:border-b-0 active:translate-y-1 transition-all hover:bg-[#65ffb9]">

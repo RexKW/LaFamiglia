@@ -45,11 +45,11 @@
                         </svg>
                         <span id="pdfFileName" class="text-zinc-200 text-sm font-mono truncate max-w-[200px]"></span>
                     </div>
-                    <button type="button" id="removePdf" class="text-[#FE4C40] hover:text-red-400 font-bold text-sm font-mono">REMOVE</button>
+                    <button type="button" id="removePdf" class="text-[#FE4C40] hover:text-red-400 text-sm font-mono">REMOVE</button>
                 </div>
 
                 <div class="text-center space-y-1">
-                    <p class="font-bold text-[#51F1A9] text-base font-mono tracking-wide">Tips for best results:</p>
+                    <p class="text-[#51F1A9] text-base font-mono tracking-wide">Tips for best results:</p>
                     <ul class="text-white text-sm font-mono leading-tight">
                         <li>• Include key concepts, definitions, and important facts</li>
                         <li>• The more detailed your input, the better the flashcards</li>

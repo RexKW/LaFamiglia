@@ -6,14 +6,14 @@
 
             <!-- Username Field -->
             <div>
-                <label for="username" class="block text-white font-bold font-mono mb-2 text-sm">Username</label>
+                <label for="username" class="block text-white font-mono mb-2 text-sm">Username</label>
                 <input type="text" name="username" id="username" required placeholder="Insert Username"
                     class="w-full bg-[#2A3B3E] text-zinc-400 px-4 py-3 rounded-lg border-2 border-[#5A6B6F] focus:outline-none focus:border-white font-mono placeholder-zinc-500">
             </div>
 
             <!-- Password Field -->
             <div>
-                <label for="password" class="block text-white font-bold font-mono mb-2 text-sm">Password</label>
+                <label for="password" class="block text-white font-mono mb-2 text-sm">Password</label>
                 <input type="password" name="password" id="password" required placeholder="Insert Password"
                     class="w-full bg-[#2A3B3E] text-zinc-400 px-4 py-3 rounded-lg border-2 border-[#5A6B6F] focus:outline-none focus:border-white font-mono placeholder-zinc-500">
             </div>
@@ -21,7 +21,7 @@
             <!-- Submit Button -->
             <div class="flex justify-center mt-6">
                 <button type="submit"
-                    class="px-12 py-3 bg-[#0093FE] text-white font-bold rounded-lg border-b-4 border-[#0073C7] active:border-b-0 active:translate-y-1 transition-all font-mono text-xl shadow-lg">
+                    class="px-12 py-3 bg-[#0093FE] text-white rounded-lg border-b-4 border-[#0073C7] active:border-b-0 active:translate-y-1 transition-all font-mono text-xl shadow-lg">
                     Login
                 </button>
             </div>

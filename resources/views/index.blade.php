@@ -37,7 +37,7 @@
         <div class="absolute inset-0 bg-linear-to-br from-purple-900/20 via-slate-950 to-pink-900/20"></div>
         <div class="max-w-7xl mx-auto relative z-10">
             <div class="text-center max-w-4xl mx-auto">
-                <h1 class="text-5xl md:text-7xl font-bold mb-6 bg-linear-to-r from-purple-400 via-pink-400 to-purple-400 gradient-animate bg-clip-text text-transparent">
+                <h1 class="text-5xl md:text-7xl mb-6 bg-linear-to-r from-purple-400 via-pink-400 to-purple-400 gradient-animate bg-clip-text text-transparent">
                     Learn Smarter with AI-Generated Flashcards
                 </h1>
                 <p class="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
